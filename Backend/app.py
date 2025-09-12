@@ -6,7 +6,7 @@ import os
 
 
 
-app = Flask(__name__, static_folder='dist', static_url_path='/')
+app = Flask(__name__, static_folder='dist', static_url_path='')
 app.secret_key = 'your_secret_key'
 CORS(app, supports_credentials=True)
 
