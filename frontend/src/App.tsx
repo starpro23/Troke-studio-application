@@ -11,6 +11,10 @@ import ClientLogin from './pages/ClientLogin';
 import ClientGallery from './pages/ClientGallery';
 import AdminLogin from './pages/AdminLogin';
 import { getGalleryById } from './utils/galleryService';
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
+
+
+
 
 const HomePage: React.FC = () => {
   const homeRef = useRef<HTMLDivElement>(null);
@@ -58,19 +62,24 @@ const HomePage: React.FC = () => {
 
 const ClientPortal: React.FC<{ galleryId: string }> = ({ galleryId }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [gallery, setGallery] = useState(getGalleryById(galleryId));
+  const [gallery, setGallery] = useState<any>(null);
 
   useEffect(() => {
-    const sessionPin = sessionStorage.getItem(`pin_${galleryId}`);
-    const currentGallery = getGalleryById(galleryId);
-    if (currentGallery && sessionPin === currentGallery.pin) {
-      setGallery(currentGallery);
-      setIsAuthenticated(true);
-    }
+    const fetchGallery = async () => {
+      const sessionPin = sessionStorage.getItem(`pin_${galleryId}`);
+      const currentGallery = await getGalleryById(galleryId);
+      if (currentGallery && sessionPin === currentGallery.pin) {
+        setGallery(currentGallery);
+        setIsAuthenticated(true);
+      } else {
+        setGallery(currentGallery);
+      }
+    };
+    fetchGallery();
   }, [galleryId]);
 
-  const handleLoginSuccess = () => {
-    const currentGallery = getGalleryById(galleryId);
+  const handleLoginSuccess = async () => {
+    const currentGallery = await getGalleryById(galleryId);
     if (currentGallery) {
         sessionStorage.setItem(`pin_${galleryId}`, currentGallery.pin);
         setGallery(currentGallery);
@@ -97,24 +106,34 @@ const ClientPortal: React.FC<{ galleryId: string }> = ({ galleryId }) => {
   return <ClientLogin galleryId={galleryId} clientName={gallery.clientName} onLoginSuccess={handleLoginSuccess} />;
 };
 
+// ClientPortalWrapper to extract galleryId from URL params
+const ClientPortalWrapper: React.FC = () => {
+  const { galleryId } = useParams<{ galleryId: string }>();
+  if (!galleryId) return <div>Gallery ID missing</div>;
+  return <ClientPortal galleryId={galleryId} />;
+};
+
+const AdminWrapper: React.FC<{ isAdminAuthenticated: boolean; onLoginSuccess: () => void; onLogout: () => void; }> = ({ isAdminAuthenticated, onLoginSuccess, onLogout }) => {
+  return (
+    <>
+      <Header navLinks={[]} scrollToSection={() => {}} isHomePage={false} />
+      {isAdminAuthenticated ? (
+          <AdminDashboard onLogout={onLogout} />
+      ) : (
+          <AdminLogin onLoginSuccess={onLoginSuccess} />
+      )}
+      <Footer />
+    </>
+  );
+};
+
 const App: React.FC = () => {
-  const [route, setRoute] = useState(window.location.hash);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
 
   useEffect(() => {
-    const handleHashChange = () => {
-      setRoute(window.location.hash);
-    };
-    window.addEventListener('hashchange', handleHashChange);
-    
-    // Check for admin session on initial load
     if (sessionStorage.getItem('admin_authenticated') === 'true') {
         setIsAdminAuthenticated(true);
     }
-
-    return () => {
-      window.removeEventListener('hashchange', handleHashChange);
-    };
   }, []);
 
   const handleAdminLoginSuccess = () => {
@@ -127,28 +146,25 @@ const App: React.FC = () => {
       setIsAdminAuthenticated(false);
   };
 
-  let content;
-
-  if (route.startsWith('#/client/')) {
-    const galleryId = route.split('/')[2];
-    content = <ClientPortal galleryId={galleryId} />;
-  } else if (route === '#/admin') {
-    content = (
-      <>
-        <Header navLinks={[]} scrollToSection={() => {}} isHomePage={false} />
-        {isAdminAuthenticated ? (
-            <AdminDashboard onLogout={handleAdminLogout} />
-        ) : (
-            <AdminLogin onLoginSuccess={handleAdminLoginSuccess} />
-        )}
-        <Footer />
-      </>
-    );
-  } else {
-    content = <HomePage />;
-  }
-
-  return <div className="bg-slate-900">{content}</div>;
+  return (
+    <Router>
+      <div className="bg-slate-900">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/client/:galleryId" element={<ClientPortalWrapper />} />
+          <Route path="/admin" element={
+            <AdminWrapper 
+              isAdminAuthenticated={isAdminAuthenticated}
+              onLoginSuccess={handleAdminLoginSuccess}
+              onLogout={handleAdminLogout}
+            />
+          } />
+        </Routes>
+      </div>
+    </Router>
+  );
 };
+
+
 
 export default App;
