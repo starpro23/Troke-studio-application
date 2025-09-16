@@ -16,7 +16,7 @@ const About: React.FC = () => {
             <h2 className="text-sm font-bold uppercase text-cyan-400 tracking-widest mb-2">About Troke Studios</h2>
             <h3 className="text-4xl font-bold text-white mb-6">Crafting Visual Legacies</h3>
             <p className="text-slate-300 mb-4 leading-relaxed">
-              Troke Studios was born from a passion for visual storytelling. We believe every photo and every frame of video should not just document an event, but evoke the emotion and atmosphere of that moment. Our approach combines technical expertise with a creative, personal touch to ensure your story is told beautifully.
+              Troke Studios is a full-service multimedia production company specializing in photography, videography, video editing, event coverage, LED panels hire, Sounds and live streaming services. With a passion for storytelling and a commitment to quality, we help clients capture their most memorable moments and create visually stunning content. Whether it's a corporate event, wedding, product launch, or live broadcast, we bring professionalism, creativity, and cutting-edge technology to every project, ensuring a polished final product.
             </p>
             <p className="text-slate-300 leading-relaxed">
               From intimate portraits to grand celebrations, we are dedicated to capturing the essence of your narrative. We work closely with our clients to understand their vision and bring it to life with stunning clarity and creativity.

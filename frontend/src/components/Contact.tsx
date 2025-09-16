@@ -36,9 +36,9 @@ const Contact: React.FC = () => {
               Have a project in mind or just want to say hello? We'd love to hear from you. Reach out via email, phone, or connect with us on social media.
              </p>
              <div className="space-y-4 text-lg">
-                <p><strong>Email:</strong> <a href="mailto:contact@trokestudios.com" className="text-cyan-400 hover:underline">contact@trokestudios.com</a></p>
-                <p><strong>Phone:</strong> <a href="tel:+1234567890" className="text-cyan-400 hover:underline">+1 (234) 567-890</a></p>
-                <p><strong>Location:</strong> Los Angeles, California</p>
+                <p><strong>Email:</strong> <a href="mailto:trokestudiosinfo@gmail.com" className="text-cyan-400 hover:underline">trokestudiosinfo@gmail.com</a></p>
+                <p><strong>Phone:</strong> <a href="tel:+254742727536" className="text-cyan-400 hover:underline">+254 742727536</a></p>
+                <p><strong>Location:</strong> Meru, Kenya</p>
              </div>
              <div className="mt-8">
                 <h5 className="text-xl font-semibold text-white mb-4">Follow Us</h5>
