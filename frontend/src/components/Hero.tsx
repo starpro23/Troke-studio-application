@@ -16,12 +16,14 @@ const Hero: React.FC<HeroProps> = ({ scrollToContact }) => {
         <p className="text-lg md:text-2xl text-slate-300 max-w-3xl mx-auto mb-8">
           Meru's premier multimedia production company, specializing in photography, videography, event coverage.
         </p>
-        <button onClick={scrollToContact} className="bg-[#FF0000] text-[#FFFFFF] font-bold py-3 px-8 rounded-full text-lg hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-red-500/30">
-          View packages
-        </button>
-        <button onClick={scrollToContact} className="bg-[#0040FF] text-[#FFFFFF] font-bold py-3 px-8 rounded-full text-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/30">
-          Call now
-        </button>
+        <div className="space-x-4">
+          <button onClick={scrollToContact} className="bg-[#FF0000] text-[#FFFFFF] font-bold py-3 px-8 rounded-full text-lg hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-red-500/30 mr -4">
+            View packages
+          </button>
+          <button onClick={scrollToContact} className="bg-[#0040FF] text-[#FFFFFF] font-bold py-3 px-8 rounded-full text-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/30">
+            Call now
+          </button>
+        </div>
       </div>
     </section>
   );
